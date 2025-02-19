@@ -1,12 +1,11 @@
 version: '3.8'
-
 services:
-  mirrors:
-    image: registry.cn-hangzhou.aliyuncs.com/oopsunix/ghproxy:latest
-    # image: oopsunix/ghproxy:latest
+  ghproxy:
+    image: oopsunix/ghproxy:latest
     # image：ghcr.io/oopsunix/ghproxy:latest
+    # image: registry.cn-hangzhou.aliyuncs.com/oopsunix/ghproxy:latest
     container_name: ghproxy
     restart: unless-stopped
     volumes:
-      - ./config.json:/app/config.json
+      - ./data:/app
     network_mode: host
