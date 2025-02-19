@@ -7,5 +7,6 @@ services:
     container_name: ghproxy
     restart: unless-stopped
     volumes:
-      - ./data:/app
-    network_mode: host
+      - ./config.json:/app/config.json
+    ports:
+      - "45000:45000"
