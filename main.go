@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"text/template"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -39,6 +40,7 @@ var (
 type Config struct {
 	WhiteList []string `json:"whiteList"`
 	BlackList []string `json:"blackList"`
+	Domain    string   `json:"domain"`
 }
 
 func main() {
@@ -68,11 +70,31 @@ func main() {
 		}
 	}()
 
-	router.StaticFile("/", "./public/index.html")
+	tmpl, err := template.ParseFiles("./public/index.html")
+	if err != nil {
+		fmt.Printf("Error loading template: %v\n", err)
+		return
+	}
+
+	router.GET("/", func(c *gin.Context) {
+		configLock.RLock()
+		domain := config.Domain
+		configLock.RUnlock()
+
+		data := struct {
+			Domain string
+		}{
+			Domain: domain,
+		}
+
+		if err := tmpl.Execute(c.Writer, data); err != nil {
+			c.String(http.StatusInternalServerError, fmt.Sprintf("Error rendering template: %v", err))
+		}
+	})
 
 	router.NoRoute(handler)
 
-	err := router.Run(fmt.Sprintf("%s:%d", host, port))
+	err = router.Run(fmt.Sprintf("%s:%d", host, port))
 	if err != nil {
 		fmt.Printf("Error starting server: %v\n", err)
 	}

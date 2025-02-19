@@ -11,18 +11,18 @@
     <meta name="language" content="zh-CN">
     <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://gh.llkk.cc">
+    <meta property="og:url" content="https://{{.Domain}}">
     <meta property="og:title" content="GitHub 文件代理加速">
     <meta property="og:description" content="在线重定向Github链接，支持API , Git 以及 Releases , Archive , gist , raw.githubusercontent.com 文件代理加速下载服务.">
     <meta property="og:image" content="https://cdn.akams.cn/github/home24-5939032587c9.jpg">
     <!-- Twitter Meta Tags -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://gh.llkk.cc" />
+    <meta property="twitter:url" content="https://{{.Domain}}" />
     <meta property="twitter:title" content="GitHub 文件代理加速" />
     <meta property="twitter:description" content="在线重定向Github链接，支持API , Git 以及 Releases , Archive , gist , raw.githubusercontent.com 文件代理加速下载服务." />
     <meta property="twitter:image" content="https://cdn.akams.cn/github/home24-5939032587c9.jpg" />
     <meta name="msvalidate.01" content="0ED5622ACD2DC6FF86BD2630060C6406" />
-    <link rel="icon" href="https://cdn.akams.cn/favicon.png" />
+    <link rel="icon" href="https://cdn.akams.cn/github/favicon.png" />
     <style>html,body{width:100%;margin:0}html{height:100%}body{min-height:100%;padding:20px;box-sizing:border-box}p{word-break:break-all}@media (max-width:500px){h1{margin-top:80px}}.flex{display:flex;flex-direction:column;justify-content:center;align-items:center}.block{display:block;position:relative}.url{font-size:18px;padding:10px 10px 10px 5px;position:relative;width:600px;border:0;border-bottom:1px solid #bfbfbf}input::placeholder{text-align: center;}input:focus{outline:0}.bar{content:'';height:2px;width:100%;bottom:0;position:absolute;background:#2378ff;transition:.2s ease transform;-moz-transition:.2s ease transform;-webkit-transition:.2s ease transform;transform:scaleX(0)}.url:focus ~ .bar{transform:scaleX(1)}.btn{line-height:38px;background-color:#2378ff;color:#fff;white-space:nowrap;text-align:center;font-size:14px;border:0;border-radius:2px;cursor:pointer;padding:5px;width:160px;margin:30px 0}.tips,.example,.command{color:#7b7b7b;position:relative;align-self:flex-start;margin-left:7.5em}.tips > p:first-child::before{position:absolute;left:-3em;content:'PS：';color:#7b7b7b}.example > p:first-child::before{position:absolute;left:-7.5em;content:'页面输入示例：';color:#7b7b7b}.command > p:first-child::before{position:absolute;left:-7.5em;content:'终端命令示例：';color:#7b7b7b}</style>
     <style>.friend-link{display:inline-block;padding:0 5px;color:#2378ff;text-align:center;text-decoration:none;font-size:14px;font-weight:900;cursor:pointer;}.friend-link:hover{background-color:#0061A8;color:#ffffff;}footer{padding:1rem 1rem;user-select:none;}footer p{text-transform:uppercase;font-size:.85rem;opacity:0.5;font-weight:bold;}footer p a{color:black;transition:all .3s;}footer p a:hover{text-decoration:none;transition:all .3s;}</style>
     <script>
@@ -53,26 +53,28 @@
         <p>Gist：<br>https://gist.github.com/oopsunix/2dbf20f64984773da6740d1d1cf7c2d4</p>
         <p>分支源码：<br>https://github.com/oopsunix/ghproxy/archive/refs/heads/main.zip</p>
         <p>Raw文件：<br>https://raw.githubusercontent.com/oopsunix/ghproxy/main/README.md</p>
-        <p>Release源码：<br>https://github.com/microsoft/vscode/archive/refs/tags/1.82.3.zip</p>
+        <p>Release源码：<br>https://github.com/oopsunix/ghproxy/archive/refs/tags/v1.0.0.zip</p>
         <p>Release文件：<br>https://github.com/oopsunix/ghproxy/releases/latest/download/ghproxy</p>
     </div>
     <div class="command">
-        <p>git clone：<br>git clone <font color="#2378ff">https://gh.llkk.cc/</font>https://github.com/microsoft/vscode
+        <p>git clone：<br>git clone <font color="#2378ff">https://{{.Domain}}/</font>https://github.com/oopsunix/ghproxy.git
         </p>
-        <p>wget：<br>wget <font color="#2378ff">https://gh.llkk.cc/</font>https://github.com/microsoft/vscode/archive/refs/tags/1.82.3.zip
+        <p>wget：<br>wget <font color="#2378ff">https://{{.Domain}}/</font>https://github.com/oopsunix/ghproxy/archive/refs/tags/v1.0.0.zip
         </p>
-        <p>curl：<br>curl -O <font color="#2378ff">https://gh.llkk.cc/</font>https://github.com/microsoft/vscode/archive/refs/tags/1.82.3.zip
+        <p>curl：<br>curl -O <font color="#2378ff">https://{{.Domain}}/</font>https://github.com/oopsunix/ghproxy/archive/refs/tags/v1.0.0.zip
         </p>
     </div>
 </form>
 <footer>
     <div style="text-align: center;">
-        <a href="https://gh.llkk.cc" class="friend-link">GITHUB PROXY</a> | <a href="https://dh.llkk.cc" class="friend-link">DOCKER HUB PROXY</a>
         <p>
-            Copyright © 2024 <a href="https://llkk.cc" target="_blank">LLKK.CC</a>. Powered by <a href="https://github.com/oopsunix/ghproxy" class="text-decoration-none link-success" target="_blank">ghproxy</a>.
+            Copyright © <span id="current-year"></span> <a href="https://github.com/oopsunix" target="_blank">oopsunix</a>. Powered by <a href="https://github.com/oopsunix/ghproxy" class="text-decoration-none link-success" target="_blank">ghproxy</a>.
         </p>
     </div>
 </footer>
-
+<script>
+    const currentYear = new Date().getFullYear();
+    document.getElementById('current-year').textContent = currentYear;
+</script>
 </body>
 </html>

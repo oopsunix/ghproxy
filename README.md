@@ -1,4 +1,4 @@
-# gh-proxy-go
+# ghproxy
 
 这是 [gh-proxy](https://github.com/hunshcn/gh-proxy) 的 Go 语言版本。
 
@@ -16,4 +16,7 @@
 
 ---
 
-如有问题或改进建议，欢迎提交 issue 或 PR！
+如有问题或改进建议，欢迎提交 [issue] 或 PR！
+
+
+[issue]: https://github.com/oopsunix/ghproxy/issues
