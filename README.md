@@ -2,18 +2,17 @@
 
 这是 [gh-proxy](https://github.com/hunshcn/gh-proxy) 的 Go 语言版本。
 
-## 部署详情
+## 支持内容
 
-[github.moeyy.xyz](https://github.moeyy.xyz/) 正在使用 **gh-proxy-go**，托管在 [BuyVM](https://buyvm.net/) 每月 3.5 美元的 1 核 1G 内存、10Gbps 带宽服务器上。
+• GitHub API (api.github.com)
 
-### 服务器概况：
+• Raw 文件 (raw.githubusercontent.com)
 
-- **日流量处理**：约 3TB
-- **CPU 平均使用率**：20%
-- **带宽平均占用**：400Mbps
+• Gist 文件 (gist.githubusercontent.com)
 
-![服务器数据](https://github.com/user-attachments/assets/6fe37f41-aa35-4efc-b0b8-8c3339529326)
-![Cloudflare 数据](https://github.com/user-attachments/assets/ae310b1f-96e9-42e9-a77c-0d8c1b8d6344)
+• Releases 文件 (github.com/用户名/仓库名/releases|archive/)
+
+• Git 克隆支持 (git clone)
 
 ---
 

@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io"
 	"net"
 	"net/http"
@@ -13,12 +12,14 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 const (
 	sizeLimit = 1024 * 1024 * 1024 * 10 // 允许的文件大小，默认10GB
 	host      = "0.0.0.0"               // 监听地址
-	port      = 8080                    // 监听端口
+	port      = 45000                   // 监听端口
 )
 
 var (
@@ -27,7 +28,8 @@ var (
 		regexp.MustCompile(`^(?:https?://)?github\.com/([^/]+)/([^/]+)/(?:blob|raw)/.*$`),
 		regexp.MustCompile(`^(?:https?://)?github\.com/([^/]+)/([^/]+)/(?:info|git-).*$`),
 		regexp.MustCompile(`^(?:https?://)?raw\.github(?:usercontent|)\.com/([^/]+)/([^/]+)/.+?/.+$`),
-		regexp.MustCompile(`^(?:https?://)?gist\.github\.com/([^/]+)/.+?/.+$`),
+		regexp.MustCompile(`^(?:https?://)?gist\.github(?:usercontent|)\.com/([^/]+)/.+?/.+$`),
+		regexp.MustCompile(`^(?:https?://)?api\.github\.com/.+?/([^/]+)(?:/.*)?$`),
 	}
 	httpClient *http.Client
 	config     *Config
@@ -67,8 +69,6 @@ func main() {
 	}()
 
 	router.StaticFile("/", "./public/index.html")
-	router.StaticFile("/favicon.ico", "./public/favicon.ico")
-	router.StaticFile("/logo.png", "./public/logo.png")
 
 	router.NoRoute(handler)
 

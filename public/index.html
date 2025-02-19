@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html lang="zh-Hans">
-<style>html,body{width:100%;margin:0}html{height:100%}body{min-height:100%;padding:20px;box-sizing:border-box}p{word-break:break-all}@media(max-width:500px){h1{margin-top:80px}}.flex{display:flex;flex-direction:column;justify-content:center;align-items:center}.block{display:block;position:relative}.url{font-size:18px;padding:10px 10px 10px 5px;position:relative;width:300px;border:0;border-bottom:1px solid #bfbfbf}input:focus{outline:0}.bar{content:'';height:2px;width:100%;bottom:0;position:absolute;background:#f0ad4e;transition:.2s ease transform;-moz-transition:.2s ease transform;-webkit-transition:.2s ease transform;transform:scaleX(0)}.url:focus ~ .bar{transform:scaleX(1)}.btn{line-height:38px;background-color:#f0ad4e;color:#fff;white-space:nowrap;text-align:center;font-size:14px;border:0;border-radius:2px;cursor:pointer;padding:5px;width:160px;margin:30px 0}.tips,.example{color:#7b7b7b;position:relative;align-self:flex-start;margin-left:7.5em}.tips>p:first-child::before{position:absolute;left:-3em;content:'PS：';color:#7b7b7b}.example>p:first-child::before{position:absolute;left:-7.5em;content:'合法输入示例：';color:#7b7b7b}</style>
 <head>
-	<meta name="description" content="GitHub 文件加速" />
-	<meta name="keywords" content="Moeyy,github,proxy,github加速,gihub加速下载" />
+    <title>GitHub 文件加速</title>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-	<link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+    <!-- HTML Meta Tags -->
+    <meta name="description" content="在线重定向Github链接，支持API , Git 以及 Releases , Archive , gist , raw.githubusercontent.com 文件代理加速下载服务."/>
+    <meta name="keywords" content="git,github,proxy,github代理,github加速,github下载,github下载加速,github文件加速,代理加速,加速下载"/>
+    <meta name="language" content="zh-CN">
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gh.llkk.cc">
+    <meta property="og:title" content="GitHub 文件代理加速">
+    <meta property="og:description" content="在线重定向Github链接，支持API , Git 以及 Releases , Archive , gist , raw.githubusercontent.com 文件代理加速下载服务.">
+    <meta property="og:image" content="https://cdn.akams.cn/github/home24-5939032587c9.jpg">
+    <!-- Twitter Meta Tags -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://gh.llkk.cc" />
+    <meta property="twitter:title" content="GitHub 文件代理加速" />
+    <meta property="twitter:description" content="在线重定向Github链接，支持API , Git 以及 Releases , Archive , gist , raw.githubusercontent.com 文件代理加速下载服务." />
+    <meta property="twitter:image" content="https://cdn.akams.cn/github/home24-5939032587c9.jpg" />
+    <meta name="msvalidate.01" content="0ED5622ACD2DC6FF86BD2630060C6406" />
+    <link rel="icon" href="https://cdn.akams.cn/favicon.png" />
+    <style>html,body{width:100%;margin:0}html{height:100%}body{min-height:100%;padding:20px;box-sizing:border-box}p{word-break:break-all}@media (max-width:500px){h1{margin-top:80px}}.flex{display:flex;flex-direction:column;justify-content:center;align-items:center}.block{display:block;position:relative}.url{font-size:18px;padding:10px 10px 10px 5px;position:relative;width:600px;border:0;border-bottom:1px solid #bfbfbf}input::placeholder{text-align: center;}input:focus{outline:0}.bar{content:'';height:2px;width:100%;bottom:0;position:absolute;background:#2378ff;transition:.2s ease transform;-moz-transition:.2s ease transform;-webkit-transition:.2s ease transform;transform:scaleX(0)}.url:focus ~ .bar{transform:scaleX(1)}.btn{line-height:38px;background-color:#2378ff;color:#fff;white-space:nowrap;text-align:center;font-size:14px;border:0;border-radius:2px;cursor:pointer;padding:5px;width:160px;margin:30px 0}.tips,.example,.command{color:#7b7b7b;position:relative;align-self:flex-start;margin-left:7.5em}.tips > p:first-child::before{position:absolute;left:-3em;content:'PS：';color:#7b7b7b}.example > p:first-child::before{position:absolute;left:-7.5em;content:'页面输入示例：';color:#7b7b7b}.command > p:first-child::before{position:absolute;left:-7.5em;content:'终端命令示例：';color:#7b7b7b}</style>
+    <style>.friend-link{display:inline-block;padding:0 5px;color:#2378ff;text-align:center;text-decoration:none;font-size:14px;font-weight:900;cursor:pointer;}.friend-link:hover{background-color:#0061A8;color:#ffffff;}footer{padding:1rem 1rem;user-select:none;}footer p{text-transform:uppercase;font-size:.85rem;opacity:0.5;font-weight:bold;}footer p a{color:black;transition:all .3s;}footer p a:hover{text-decoration:none;transition:all .3s;}</style>
     <script>
         function toSubmit(e) {
             e.preventDefault()
@@ -15,30 +32,47 @@
             return false
         }
     </script>
-    <title>GitHub 文件加速</title>
 </head>
 <body class="flex">
-
-<h1 style="margin-bottom: 50px"><img src="/logo.png" style="width: 1.5em;margin-right: .2em;vertical-align: bottom;">GitHub 文件加速</h1>
-<form action=".." method="get" style="padding-bottom: 40px" target="_blank" class="flex" onsubmit="toSubmit(event)">
+<h1 style="margin-bottom: 50px"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 24 24'%3E%3Cpath d='M20.38 8.53c.16-.4.68-1.99-.17-4.14c0 0-1.31-.39-4.3 1.61c-1.25-.33-2.58-.38-3.91-.38c-1.32 0-2.66.05-3.91.38c-2.99-2.03-4.3-1.61-4.3-1.61c-.85 2.15-.33 3.74-.16 4.14C2.61 9.62 2 11 2 12.72c0 6.44 4.16 7.89 10 7.89c5.79 0 10-1.45 10-7.89c0-1.72-.61-3.1-1.62-4.19M12 19.38c-4.12 0-7.47-.19-7.47-4.19c0-.95.47-1.85 1.27-2.58c1.34-1.23 3.63-.58 6.2-.58c2.59 0 4.85-.65 6.2.58c.8.73 1.3 1.62 1.3 2.58c0 3.99-3.37 4.19-7.5 4.19m-3.14-6.26c-.82 0-1.5 1-1.5 2.22c0 1.23.68 2.24 1.5 2.24c.83 0 1.5-1 1.5-2.24c0-1.23-.67-2.22-1.5-2.22m6.28 0c-.83 0-1.5.99-1.5 2.22c0 1.24.67 2.24 1.5 2.24c.82 0 1.5-1 1.5-2.24c0-1.23-.64-2.22-1.5-2.22z' fill='%23000000'/%3E%3C/svg%3E" style="width: 1.5em;margin-right: .2em;vertical-align: bottom;"> GitHub Proxy</h1>
+<form action="./" method="get" style="padding-bottom: 0px" target="_blank" class="flex" onsubmit="toSubmit(event)">
     <label class="block" style="width: fit-content">
         <input class="block url" name="q" type="text" placeholder="键入Github文件链接"
-               pattern="^((https|http):\/\/)?(github\.com\/.+?\/.+?\/(?:releases|archive|blob|raw|suites)|((?:raw|gist)\.(?:githubusercontent|github)\.com))\/.+$" required>
+               pattern="^((https|http):\/\/)?(github\.com\/.+?\/.+?\/(?:releases|archive|blob|raw|suites)|((?:raw|gist|api)\.(?:githubusercontent|github)\.com))\/.+$"
+               required>
         <div class="bar"></div>
     </label>
     <input class="block btn" type="submit" value="下载">
-    <div class="tips"><p>GitHub文件链接带不带协议头都可以，支持release、archive以及文件，右键复制出来的链接都是符合标准的</a>。</p>
-        <p>注意，不支持项目文件夹，请使用Git。</p></div>
+    <div class="tips">
+        <p>🎊<font color="#2378ff">现已支持 GitHub API (api.github.com) 代理</font>🎊</p>
+        <p>支持终端命令行 git clone , wget , curl 下载</p>
+        <p>GitHub文件链接带不带协议头都可以，支持 releases、archive、gist、raw.githubusercontent.com 文件（除文件夹）</p>
+    </div>
     <div class="example">
-        <p>分支源码：<font color="#f0ad4e">https://github.moeyy.xyz/</font>https://github.com/moeyy/project/archive/master.zip</p>
-        <p>release源码：<font color="#f0ad4e">https://github.moeyy.xyz/</font>https://github.com/moeyy/project/archive/v0.1.0.tar.gz</p>
-        <p>release文件：<font color="#f0ad4e">https://github.moeyy.xyz/</font>https://github.com/moeyy/project/releases/download/v0.1.0/example.zip</p>
-        <p>分支文件：<font color="#f0ad4e">https://github.moeyy.xyz/</font>https://github.com/moeyy/project/blob/master/filename</p>
-      	<p>Raw：<font color="#f0ad4e">https://github.moeyy.xyz/</font>https://raw.githubusercontent.com/moeyy/project/archive/master.zip</p>
-      	<p>使用Git: git clone <font color="#f0ad4e">https://github.moeyy.xyz/</font>https://github.com/moeyy/project</p>
+        <p>API：<br>https://api.github.com/repos/oopsunix/ghproxy</p>
+        <p>Gist：<br>https://gist.github.com/oopsunix/2dbf20f64984773da6740d1d1cf7c2d4</p>
+        <p>分支源码：<br>https://github.com/oopsunix/ghproxy/archive/refs/heads/main.zip</p>
+        <p>Raw文件：<br>https://raw.githubusercontent.com/oopsunix/ghproxy/main/README.md</p>
+        <p>Release源码：<br>https://github.com/microsoft/vscode/archive/refs/tags/1.82.3.zip</p>
+        <p>Release文件：<br>https://github.com/oopsunix/ghproxy/releases/latest/download/ghproxy</p>
+    </div>
+    <div class="command">
+        <p>git clone：<br>git clone <font color="#2378ff">https://gh.llkk.cc/</font>https://github.com/microsoft/vscode
+        </p>
+        <p>wget：<br>wget <font color="#2378ff">https://gh.llkk.cc/</font>https://github.com/microsoft/vscode/archive/refs/tags/1.82.3.zip
+        </p>
+        <p>curl：<br>curl -O <font color="#2378ff">https://gh.llkk.cc/</font>https://github.com/microsoft/vscode/archive/refs/tags/1.82.3.zip
+        </p>
     </div>
 </form>
-<p style="position: sticky;top: calc(100% - 2.5em);">基于 <a style="color: #f0ad4e" href="https://github.com/hunshcn/gh-proxy">hunshcn/gh-proxy</a> 修改，使用Golang重构。开源于GitHub <a style="color: #f0ad4e" href="https://github.com/moeyy01/gh-proxy-go">moeyy01/gh-proxy-go</a>
-</p>
+<footer>
+    <div style="text-align: center;">
+        <a href="https://gh.llkk.cc" class="friend-link">GITHUB PROXY</a> | <a href="https://dh.llkk.cc" class="friend-link">DOCKER HUB PROXY</a>
+        <p>
+            Copyright © 2024 <a href="https://llkk.cc" target="_blank">LLKK.CC</a>. Powered by <a href="https://github.com/oopsunix/ghproxy" class="text-decoration-none link-success" target="_blank">ghproxy</a>.
+        </p>
+    </div>
+</footer>
+
 </body>
 </html>

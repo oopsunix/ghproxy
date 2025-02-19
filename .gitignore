@@ -1,4 +1,13 @@
+# IDE
+.idea/
+.vscode/
+.DS_Store
 
-/.idea
-buiid.bat
-main_linux
+# Environments
+.env
+.venv
+
+build/
+cache/
+test/
+log/
