@@ -17,9 +17,9 @@ import (
 )
 
 const (
-	sizeLimit = 1024 * 1024 * 1024 * 10 // 允许的文件大小，默认10GB
-	host      = "0.0.0.0"               // 监听地址
-	port      = 45000                   // 监听端口
+	sizeLimit int64 = 1024 * 1024 * 1024 * 10 // 允许的文件大小，默认10GB
+	host            = "0.0.0.0"               // 监听地址
+	port            = 45000                   // 监听端口
 )
 
 var (
@@ -138,8 +138,14 @@ func proxy(c *gin.Context, u string) {
 		}
 	}(resp.Body)
 
-	if contentLength, ok := resp.Header["Content-Length"]; ok {
-		if size, err := strconv.Atoi(contentLength[0]); err == nil && size > sizeLimit {
+	if contentLength := resp.Header.Get("Content-Length"); contentLength != "" {
+		size, err := strconv.ParseInt(contentLength, 10, 64)
+		if err != nil {
+			c.String(http.StatusBadRequest, "Invalid Content-Length")
+			return
+		}
+
+		if size > sizeLimit {
 			c.String(http.StatusRequestEntityTooLarge, "File too large.")
 			return
 		}
