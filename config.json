@@ -1,9 +1,10 @@
 {
+  "debug": false,
   "domain": "gh.llkk.cc",
   "whiteList": [
   ],
   "blackList": [
-    "example3",
-    "example4"
+    "example1",
+    "example2"
   ]
 }

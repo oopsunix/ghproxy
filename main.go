@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -35,17 +36,68 @@ var (
 	httpClient *http.Client
 	config     *Config
 	configLock sync.RWMutex
+	log        = logrus.New()
 )
 
 type Config struct {
 	WhiteList []string `json:"whiteList"`
 	BlackList []string `json:"blackList"`
 	Domain    string   `json:"domain"`
+	Debug     bool     `json:"debug"`
+}
+
+func init() {
+	formatter := logrus.TextFormatter{
+		ForceColors:               true,
+		EnvironmentOverrideColors: true,
+		TimestampFormat:           "2006-01-02 15:04:05",
+		FullTimestamp:             true,
+	}
+	log.SetFormatter(&formatter)
+}
+
+func customLogger() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// 检查请求路径，如果路径是 "/"，则不记录日志
+		if c.Request.URL.Path == "/" {
+			c.Next() // 继续处理请求，但不记录日志
+			return
+		}
+
+		// 记录日志（这里使用 Gin 默认的日志格式）
+		start := time.Now()
+		c.Next()
+		end := time.Now()
+		latency := end.Sub(start)
+		clientIP := c.ClientIP()
+		method := c.Request.Method
+		statusCode := c.Writer.Status()
+		path := c.Request.URL.Path
+		userAgent := c.Request.UserAgent()
+
+		logMessage := fmt.Sprintf(
+			"%15s | %3d | %8v | %s   \"%s\" | %-50s",
+			clientIP, statusCode, latency.Round(time.Millisecond), method, path, userAgent,
+		)
+
+		log.Debug(logMessage)
+	}
 }
 
 func main() {
+	loadConfig()
+	go func() {
+		for {
+			time.Sleep(10 * time.Minute)
+			loadConfig()
+		}
+	}()
+
 	gin.SetMode(gin.ReleaseMode)
-	router := gin.Default()
+	router := gin.New()
+
+	// 使用自定义日志中间件
+	router.Use(customLogger())
 
 	httpClient = &http.Client{
 		Transport: &http.Transport{
@@ -62,19 +114,14 @@ func main() {
 		},
 	}
 
-	loadConfig()
-	go func() {
-		for {
-			time.Sleep(10 * time.Minute)
-			loadConfig()
-		}
-	}()
-
 	tmpl, err := template.ParseFiles("./public/index.html")
 	if err != nil {
-		fmt.Printf("Error loading template: %v\n", err)
+		log.Errorf("load template error: %v\n", err)
 		return
 	}
+
+	httpBase := fmt.Sprintf("%s:%d", host, port)
+	log.Info("start HTTP server @ ", httpBase)
 
 	router.GET("/", func(c *gin.Context) {
 		configLock.RLock()
@@ -96,7 +143,7 @@ func main() {
 
 	err = router.Run(fmt.Sprintf("%s:%d", host, port))
 	if err != nil {
-		fmt.Printf("Error starting server: %v\n", err)
+		log.Errorf("start server error: %v\n", err)
 	}
 }
 
@@ -199,9 +246,10 @@ func proxy(c *gin.Context, u string) {
 }
 
 func loadConfig() {
+	log.Info("loading config...")
 	file, err := os.Open("config.json")
 	if err != nil {
-		fmt.Printf("Error loading config: %v\n", err)
+		log.Errorf("load config error: %v\n", err)
 		return
 	}
 	defer func(file *os.File) {
@@ -214,12 +262,17 @@ func loadConfig() {
 	var newConfig Config
 	decoder := json.NewDecoder(file)
 	if err := decoder.Decode(&newConfig); err != nil {
-		fmt.Printf("Error decoding config: %v\n", err)
+		log.Errorf("decod config error: %v\n", err)
 		return
 	}
 
 	configLock.Lock()
 	config = &newConfig
+	if newConfig.Debug {
+		log.SetLevel(logrus.DebugLevel)
+	} else {
+		log.SetLevel(logrus.InfoLevel)
+	}
 	configLock.Unlock()
 }
 
