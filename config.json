@@ -6,5 +6,13 @@
   "blackList": [
     "example1",
     "example2"
-  ]
+  ],
+  "requestLimit": {
+    "limitRate": 500,
+    "limitSize": 10240,
+    "limitParm": {
+      "user-agent": "Mozilla/5.0 (Linux; Android) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36"
+    },
+    "limitAddr": ["216.152.18.8", "5.78.130.39"]
+  }
 }

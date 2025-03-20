@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	sizeLimit int64 = 1024 * 1024 * 1024 * 10 // 允许的文件大小，默认10GB
+	limitSize int64 = 1024 * 1024 * 1024 * 10 // 允许的文件大小，默认10GB
 	host            = "0.0.0.0"               // 监听地址
 	port            = 45000                   // 监听端口
 )
@@ -37,13 +37,25 @@ var (
 	config     *Config
 	configLock sync.RWMutex
 	log        = logrus.New()
+
+	// 新增：用于记录每个 IP 的请求时间
+	ipRequests = make(map[string][]time.Time)
+	ipLock     sync.Mutex
 )
 
 type Config struct {
-	WhiteList []string `json:"whiteList"`
-	BlackList []string `json:"blackList"`
-	Domain    string   `json:"domain"`
-	Debug     bool     `json:"debug"`
+	WhiteList    []string           `json:"whiteList"`
+	BlackList    []string           `json:"blackList"`
+	Domain       string             `json:"domain"`
+	Debug        bool               `json:"debug"`
+	RequestLimit RequestLimitConfig `toml:"requestLimit"`
+}
+
+type RequestLimitConfig struct {
+	LimitRate int64             `toml:"limitRate"`
+	LimitSize int64             `toml:"limitSize"`
+	LimitParm map[string]string `toml:"limitParm"`
+	LimitAddr []string          `toml:"limitAddr"`
 }
 
 func init() {
@@ -178,6 +190,58 @@ func handler(c *gin.Context) {
 		rawPath = strings.Replace(rawPath, "/blob/", "/raw/", 1)
 	}
 
+	// 新增：基于时间的速率限制
+	clientIP := c.ClientIP()
+	ipLock.Lock()
+	limitRate := config.RequestLimit.LimitRate
+	now := time.Now()
+	// 移除一分钟前的请求记录
+	for ip, times := range ipRequests {
+		var recentTimes []time.Time
+		for _, t := range times {
+			if now.Sub(t) <= time.Minute {
+				recentTimes = append(recentTimes, t)
+			}
+		}
+		ipRequests[ip] = recentTimes
+	}
+	log.Debugf("clientIP: %s  Rate: %d\n", clientIP, len(ipRequests[clientIP]))
+	// 检查当前 IP 的请求次数是否超过限制
+	if len(ipRequests[clientIP]) > int(limitRate) {
+		ipLock.Unlock()
+		c.String(http.StatusTooManyRequests, "Too Many Requests.")
+		return
+	}
+	// 记录当前请求时间
+	ipRequests[clientIP] = append(ipRequests[clientIP], now)
+	ipLock.Unlock()
+
+	// 限制访问 IP
+	configLock.RLock()
+	limitAddr := config.RequestLimit.LimitAddr
+	configLock.RUnlock()
+	if len(limitAddr) > 0 {
+		for _, ip := range limitAddr {
+			if clientIP == ip {
+				c.String(http.StatusBadRequest, "Too Many Requests.")
+				return
+			}
+		}
+	}
+
+	// 限制请求参数
+	configLock.RLock()
+	limitParm := config.RequestLimit.LimitParm
+	configLock.RUnlock()
+	if len(limitParm) > 0 {
+		for key, value := range limitParm {
+			if c.Request.Header.Get(key) == value {
+				c.String(http.StatusBadRequest, "Too Many Requests.")
+				return
+			}
+		}
+	}
+
 	proxy(c, rawPath)
 }
 
@@ -214,7 +278,11 @@ func proxy(c *gin.Context, u string) {
 			return
 		}
 
-		if size > sizeLimit {
+		configLock.RLock()
+		limitSize := config.RequestLimit.LimitSize * 1024 * 1024 // Convert MB to Bytes
+		configLock.RUnlock()
+
+		if size > limitSize {
 			c.String(http.StatusRequestEntityTooLarge, "File too large.")
 			return
 		}
